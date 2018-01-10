@@ -4,10 +4,10 @@ Client for the Bitstamp websocket written in Python.
 API Documentation: https://www.bitstamp.net/websocket/
 
 What you can do with this client:
-- Live ticker
-- Live Order Book
-- Live Full Order Book
-- Liver Orders
+- Live ticker (untested)
+- Live Order Book **(tested)**
+- Live Full Order Book (untested)
+- Liver Orders (untested)
 
 ## Usage
 
@@ -33,8 +33,8 @@ client.subscribe("live_trades", "btc", "eur")
 client.subscribe("order_book", "btc", "usd") #choose either this one, for accuracy
 client.subscribe("diff_order_book", "btc", "usd") #or this one, for speed
 #both will keep client.orderbook["btc"]["usd"] up to date
-client.subscribe("live_orders", "eur", "usd")
-#this will keep self.openorders["eur"]["usd"] up to date, and stores open orders
+client.subscribe("liveorders", "eur", "usd")
+#this will keep self.open_orders["eur"]["usd"] up to date, and stores open orders
 #by id and by price
 ```
 
@@ -42,14 +42,14 @@ To get the data from the client, access its attributes. There are no functions t
 return the data from the instantiated object. The attributes that could be accessed
 are:
 
-### last_price
+### lastprice
 ```python
 {'eur': {'usd': {'price': {}, 'id': {}}},
  'btc': {'usd': '607.38',
          'eur': {'price': {}, 'id': {}}}}
 ```
 
-### order_book
+### orderbook
 ```python
 {'eur': {'usd': {'price': {}, 'id': {}}},
  'btc': {'usd': {'price': {}, 'id': {}},
@@ -57,7 +57,7 @@ are:
                 'asks': [['545.41000000', '1.22027127'], ['545.42000000', '7.45199753'], ['545.50000000', '5.00000000'], ['545.96000000', '1.77000000'], ['545.97000000', '2.13058700'], ['545.98000000', '0.40000000'], ['545.99000000', '11.68681858'], ['546.05000000', '0.00940000'], ['546.10000000', '2.00000000'], ['546.63000000', '0.01427073'], ['546.67000000', '20.00000000'], ['546.70000000', '1.75590000'], ['547.04000000', '0.12500000'], ['547.21000000', '0.01426074'], ['547.44000000', '0.55088459'], ['547.45000000', '1.96054000'], ['547.80000000', '0.01424075'], ['548.00000000', '0.02000000'], ['548.08000000', '3.13810000'], ['548.15000000', '0.11107291']]}}}
 ```
 
-### open_orders
+### openorders
 ```python
 #The data below was shortened for readability, so price and id do not match,
 #because they are not complete
