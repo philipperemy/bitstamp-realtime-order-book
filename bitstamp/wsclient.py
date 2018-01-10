@@ -1,8 +1,6 @@
-# from decimal import Decimal
 import json
 
 import pusherclientb as pusherclient
-# import pusherclient
 import requests
 
 
@@ -21,15 +19,15 @@ class BitstampWebsocketClient(object):
             for pair in ["btceur",
                          "eurusd"]:
                 self.channels[channel + "_" + pair] = []
-        self.orderbook = {"btc": {"eur": None,
-                                  "usd": None},
-                          "eur": {"usd": None}}
-        self.lastprice = self.orderbook
-        self.openorders = self.orderbook
-        for base in self.openorders.keys():
-            for quote in self.openorders[base].keys():
-                self.openorders[base][quote] = {"price": {},
-                                                "id": {}}
+        self.order_book = {"btc": {"eur": None,
+                                   "usd": None},
+                           "eur": {"usd": None}}
+        self.last_price = self.order_book
+        self.open_orders = self.order_book
+        for base in self.open_orders.keys():
+            for quote in self.open_orders[base].keys():
+                self.open_orders[base][quote] = {"price": {},
+                                                 "id": {}}
         self.pusher = pusherclient.Pusher(self.key)
         self.pusher.connect()
 
@@ -50,12 +48,12 @@ class BitstampWebsocketClient(object):
         if stream == "diff_order_book":
             orderbook = json.loads(requests.get(  # TODO base quote here
                 "https://www.bitstamp.net/api/order_book/"))
-            self.orderbook[base][quote] = orderbook
+            self.order_book[base][quote] = orderbook
 
     def live_trades(self, message, base=None, quote=None, *args, **kwargs):
         """trade:
            id, amount, price, type, timestamp, buy_order_id, sell_order_id"""
-        self.lastprice[base][quote] = str(message["price"])
+        self.last_price[base][quote] = str(message["price"])
 
     def order_book(self, message, base=None, quote=None, *args, **kwargs):
         """Users should subscribe to either order_book or diff_order_book.
@@ -63,7 +61,7 @@ class BitstampWebsocketClient(object):
            quicker.
            data:
            bids, asks"""
-        self.orderbook[base][quote] = message
+        self.order_book[base][quote] = message
 
     def diff_order_book(self, message, base=None, quote=None, *args, **kwargs):
         """data:
@@ -79,32 +77,32 @@ class BitstampWebsocketClient(object):
            id, amount, price, order_type, datetime"""
         message["price"] = str(message["price"])
         if messagetype == "order_created":
-            if message["price"] not in self.openorders[base][quote]["price"]:
-                self.openorders[base][quote]["price"][message["price"]] = []
-            self.openorders[base][quote]["price"][message["price"]].append(
+            if message["price"] not in self.open_orders[base][quote]["price"]:
+                self.open_orders[base][quote]["price"][message["price"]] = []
+            self.open_orders[base][quote]["price"][message["price"]].append(
                 message)
-            self.openorders[base][quote]["id"][message["id"]] = message
+            self.open_orders[base][quote]["id"][message["id"]] = message
         if messagetype == "order_changed":
-            self.openorders[base][quote]["id"][message["id"]] = message
+            self.open_orders[base][quote]["id"][message["id"]] = message
             i = 0
-            for order in self.openorders[base][quote]["price"][
+            for order in self.open_orders[base][quote]["price"][
                 message["price"]]:
                 if order["id"] == message["id"]:
-                    self.openorders[base][quote]["price"][
+                    self.open_orders[base][quote]["price"][
                         message["price"]][i] = message
                 i += 1
-            self.openorders[base][quote]["price"]
+                # self.open_orders[base][quote]["price"]
         if messagetype == "order_deleted":
             try:
-                del self.openorders[base][quote]["id"][message["id"]]
+                del self.open_orders[base][quote]["id"][message["id"]]
             except KeyError:
                 pass
             try:
                 i = 0
-                for order in self.openorders[base][quote]["price"][
+                for order in self.open_orders[base][quote]["price"][
                     message["price"]]:
                     if order["id"] == message["id"]:
-                        del self.openorders[base][quote]["price"][
+                        del self.open_orders[base][quote]["price"][
                             message["price"]][i]
                     i += 1
             except KeyError:
