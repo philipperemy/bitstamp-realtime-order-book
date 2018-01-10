@@ -29,11 +29,11 @@ client = bitstamp.wsclient.BitstampWebsocketClient()
 Secondly, subscribe to data sources.
 ```python
 client.subscribe("live_trades", "btc", "eur")
-#this will update client.last_price["btc"]["eur"]
+#this will update client.lastprice["btc"]["eur"]
 client.subscribe("order_book", "btc", "usd") #choose either this one, for accuracy
 client.subscribe("diff_order_book", "btc", "usd") #or this one, for speed
-#both will keep client.order_book["btc"]["usd"] up to date
-client.subscribe("live_orders", "eur", "usd")
+#both will keep client.orderbook["btc"]["usd"] up to date
+client.subscribe("liveorders", "eur", "usd")
 #this will keep self.open_orders["eur"]["usd"] up to date, and stores open orders
 #by id and by price
 ```
