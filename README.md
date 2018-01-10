@@ -1,13 +1,9 @@
-# Bitstamp Realtime client
+# Bitstamp Realtime Client
 Client for the Bitstamp websocket written in Python.
 
-Bitstamp does not use regular websockets, but sends messages through Pusher.
-Implementations of both Bitstamp and Pusher logic in Python do exist, but this
-repository keeps the two separate.
+API Documentation: https://www.bitstamp.net/websocket/
 
-https://www.bitstamp.net/websocket/
-
-What you can do:
+What you can do with this client:
 - Live ticker
 - Live Order Book
 - Live Full Order Book
@@ -45,20 +41,23 @@ client.subscribe("live_orders", "eur", "usd")
 To get the data from the client, access its attributes. There are no functions to
 return the data from the instantiated object. The attributes that could be accessed
 are:
-### lastprice
+
+### last_price
 ```python
 {'eur': {'usd': {'price': {}, 'id': {}}},
  'btc': {'usd': '607.38',
          'eur': {'price': {}, 'id': {}}}}
 ```
-### orderbook
+
+### order_book
 ```python
 {'eur': {'usd': {'price': {}, 'id': {}}},
  'btc': {'usd': {'price': {}, 'id': {}},
          'eur': {'bids': [['542.57000000', '0.09375660'], ['542.56000000', '0.64376270'], ['542.55000000', '1.04019586'], ['542.43000000', '0.01429072'], ['542.40000000', '9.90000000'], ['542.00000000', '0.59001845'], ['541.92000000', '0.54879067'], ['541.85000000', '0.54010071'], ['541.31000000', '20.00000000'], ['541.28000000', '1.51017572'], ['541.26000000', '0.01432070'], ['541.06000000', '0.27646712'], ['540.99000000', '0.05999999'], ['540.68000000', '0.01433069'], ['540.54000000', '3.01230000'], ['540.09000000', '0.01435068'], ['540.00000000', '1.89310414'], ['539.96000000', '3.05143258'], ['539.91000000', '0.20000000'], ['539.84000000', '0.33000000']],
                 'asks': [['545.41000000', '1.22027127'], ['545.42000000', '7.45199753'], ['545.50000000', '5.00000000'], ['545.96000000', '1.77000000'], ['545.97000000', '2.13058700'], ['545.98000000', '0.40000000'], ['545.99000000', '11.68681858'], ['546.05000000', '0.00940000'], ['546.10000000', '2.00000000'], ['546.63000000', '0.01427073'], ['546.67000000', '20.00000000'], ['546.70000000', '1.75590000'], ['547.04000000', '0.12500000'], ['547.21000000', '0.01426074'], ['547.44000000', '0.55088459'], ['547.45000000', '1.96054000'], ['547.80000000', '0.01424075'], ['548.00000000', '0.02000000'], ['548.08000000', '3.13810000'], ['548.15000000', '0.11107291']]}}}
 ```
-### openorders
+
+### open_orders
 ```python
 #The data below was shortened for readability, so price and id do not match,
 #because they are not complete
@@ -86,9 +85,7 @@ are:
                                      151771462, 'datetime': '1474285222', 'amount': 2.09}}}}}
 ```
 
-Note that all data points are strings, so users can convert them to their own
-favourite data type.
-
+Note that all data points are strings, so users can convert them to their own favourite data type.
 
 ## Third party source code included
 
