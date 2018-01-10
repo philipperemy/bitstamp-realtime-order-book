@@ -1,11 +1,29 @@
-# bitstamp-python-websocket-client
-Client for the Bitstamp websocket written in Python
+# Bitstamp Realtime client
+Client for the Bitstamp websocket written in Python.
 
 Bitstamp does not use regular websockets, but sends messages through Pusher.
 Implementations of both Bitstamp and Pusher logic in Python do exist, but this
 repository keeps the two separate.
 
+https://www.bitstamp.net/websocket/
+
+What you can do:
+- Live ticker
+- Live Order Book
+- Live Full Order Book
+- Liver Orders
+
 ## Usage
+
+### Installation
+
+```bash
+git clone git@github.com:philipperemy/bitstamp-realtime-order-book.git
+cd bitstamp-realtime-order-book
+pip3 install -r requirements.txt
+python3 ges.py # will start streaming the order book of BTC/USD.
+```
+
 Firstly, instantiate a new Bitstamp object.
 ```python
 import bitstamp
@@ -73,10 +91,8 @@ favourite data type.
 
 
 ## Third party source code included
+
 * The folder pusherclient was copied from Erik Kulyk (ekulyk), and is under the
 MIT license. Changes to pusherclient made here will be or have been proposed to
 the [original repository](https://github.com/ekulyk/PythonPusherClient), if they
-could be useful outside this project. *Currently the changes to PythonPusherClient
-are not yet merged to the main branch. Use
-[my own fork](https://github.com/bartbroere/PythonPusherClient) to have the
-compatible version of PythonPusherClient!*
+could be useful outside this project.
