@@ -16,7 +16,7 @@ sleep(10)
 last_order_book = None
 last_time_seconds = 0
 while True:
-    new_order_book = copy.deepcopy(client.order_book)
+    new_order_book = copy.deepcopy(client.orderbook)
     if new_order_book != last_order_book:
         print('{0:.3f}'.format(1000 * (time() - last_time_seconds)), new_order_book)
         print('\n\n\n')
