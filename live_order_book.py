@@ -8,14 +8,21 @@ client = BitstampWebsocketClient()
 
 sleep(10)
 
-client.subscribe('order_book', 'btc', 'usd')  # choose either this one, for accuracy
+target_pair = 'btcusd'
+
+base = target_pair[:3]
+quote = target_pair[3:]
+
+client.subscribe('order_book', base, quote)
 
 sleep(10)
+
+order_book = getattr(client, 'orderbook_{}'.format(target_pair))
 
 last_order_book = None
 last_time_seconds = time()
 while True:
-    new_order_book = copy.deepcopy(client.orderbook_btceur)
+    new_order_book = copy.deepcopy(order_book)
     if new_order_book != last_order_book:
         print('{0:.3f}'.format(1000 * (time() - last_time_seconds)), new_order_book)
         # print('\n\n\n')
