@@ -1,7 +1,7 @@
 import json
 from threading import Lock
 
-import pusherclientb as pusherclient
+import pusherclient as pusherclient
 import requests
 
 PAIRS = ['btcusd', 'btceur', 'eurusd', 'xrpusd', 'xrpeur',
