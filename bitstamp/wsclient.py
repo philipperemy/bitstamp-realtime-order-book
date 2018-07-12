@@ -10,6 +10,12 @@ PAIRS = ['btcusd', 'btceur', 'eurusd', 'xrpusd', 'xrpeur',
          'bcheur', 'bchbtc']
 
 
+def order_book_assign(var, base, quote, message):
+    if base not in var:
+        var[base] = {}
+    var[base][quote] = message
+
+
 def clean_empty(d):
     if not isinstance(d, (dict, list)):
         return d
@@ -42,18 +48,6 @@ def merge_all(*args):
     return result
 
 
-def generate_response_template():
-    response = {}
-    for pair in PAIRS:
-        base = pair[:3]
-        quote = pair[3:]
-
-        if base not in response:
-            response[base] = {}
-        response[base][quote] = None
-    return response
-
-
 class BitstampWebsocketClient(object):
     def __init__(self, *args, **kwargs):
         self.key = 'de504dc5763aeef9ff52'  # Bitstamp pusher key.
@@ -70,26 +64,39 @@ class BitstampWebsocketClient(object):
             for pair in PAIRS:
                 self.channels[channel + '_' + pair] = []
 
-        self.lastprice_btcusd = generate_response_template()
-        self.lastprice_btceur = generate_response_template()
-        self.lastprice_eurusd = generate_response_template()
-        self.lastprice_xrpusd = generate_response_template()
-        self.lastprice_xrpeur = generate_response_template()
-        self.lastprice_xrpbtc = generate_response_template()
-        self.lastprice_ltcusd = generate_response_template()
-        self.lastprice_ltceur = generate_response_template()
-        self.lastprice_ltcbtc = generate_response_template()
-        self.lastprice_ethusd = generate_response_template()
-        self.lastprice_etheur = generate_response_template()
-        self.lastprice_ethbtc = generate_response_template()
-        self.lastprice_bchusd = generate_response_template()
-        self.lastprice_bcheur = generate_response_template()
-        self.lastprice_bchbtc = generate_response_template()
+        self.lastprice_btcusd = {}
+        self.lastprice_btceur = {}
+        self.lastprice_eurusd = {}
+        self.lastprice_xrpusd = {}
+        self.lastprice_xrpeur = {}
+        self.lastprice_xrpbtc = {}
+        self.lastprice_ltcusd = {}
+        self.lastprice_ltceur = {}
+        self.lastprice_ltcbtc = {}
+        self.lastprice_ethusd = {}
+        self.lastprice_etheur = {}
+        self.lastprice_ethbtc = {}
+        self.lastprice_bchusd = {}
+        self.lastprice_bcheur = {}
+        self.lastprice_bchbtc = {}
 
-        self.orderbook_btceur = generate_response_template()
-        self.orderbook_btcusd = generate_response_template()
+        self.orderbook_btcusd = {}
+        self.orderbook_btceur = {}
+        self.orderbook_eurusd = {}
+        self.orderbook_xrpusd = {}
+        self.orderbook_xrpeur = {}
+        self.orderbook_xrpbtc = {}
+        self.orderbook_ltcusd = {}
+        self.orderbook_ltceur = {}
+        self.orderbook_ltcbtc = {}
+        self.orderbook_ethusd = {}
+        self.orderbook_etheur = {}
+        self.orderbook_ethbtc = {}
+        self.orderbook_bchusd = {}
+        self.orderbook_bcheur = {}
+        self.orderbook_bchbtc = {}
 
-        self.openorders = generate_response_template()
+        self.openorders = {}
         for base in self.openorders.keys():
             for quote in self.openorders[base].keys():
                 self.openorders[base][quote] = {'price': {},
@@ -101,7 +108,7 @@ class BitstampWebsocketClient(object):
         for pair in PAIRS:
             base = pair[:3]
             quote = pair[3:]
-            self.subscribe("live_trades", base, quote)
+            self.subscribe('live_trades', base, quote)
 
     def subscribe(self, stream, base, quote):
         print('-> subscribe({0}, {1}, {2})'.format(stream, base, quote))
@@ -188,24 +195,63 @@ class BitstampWebsocketClient(object):
                          self.lastprice_bcheur,
                          self.lastprice_bchbtc)
 
-    def order_book_btceur(self, message, base=None, quote=None, *args, **kwargs):
-        self.orderbook_btceur[base][quote] = message
-
     def order_book_btcusd(self, message, base=None, quote=None, *args, **kwargs):
-        self.orderbook_btcusd[base][quote] = message
+        order_book_assign(self.orderbook_btcusd, base, quote, message)
+
+    def order_book_btceur(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_btceur, base, quote, message)
+
+    def order_book_eurusd(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_eurusd, base, quote, message)
+
+    def order_book_xrpusd(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_xrpusd, base, quote, message)
+
+    def order_book_xrpeur(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_xrpeur, base, quote, message)
+
+    def order_book_xrpbtc(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_xrpbtc, base, quote, message)
+
+    def order_book_ltcusd(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_ltcusd, base, quote, message)
+
+    def order_book_ltceur(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_ltceur, base, quote, message)
+
+    def order_book_ltcbtc(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_ltcbtc, base, quote, message)
+
+    def order_book_ethusd(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_ethusd, base, quote, message)
+
+    def order_book_etheur(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_etheur, base, quote, message)
+
+    def order_book_ethbtc(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_ethbtc, base, quote, message)
+
+    def order_book_bchusd(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_bchusd, base, quote, message)
+
+    def order_book_bcheur(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_bcheur, base, quote, message)
+
+    def order_book_bchbtc(self, message, base=None, quote=None, *args, **kwargs):
+        order_book_assign(self.orderbook_bchbtc, base, quote, message)
 
     def diff_order_book(self, message, base=None, quote=None, *args, **kwargs):
-        """data:
-           bids, asks"""
+        '''data:
+           bids, asks'''
         self.diffmessage = message
-        todo = """implement a dict that has the price as index, and the side
+        todo = '''implement a dict that has the price as index, and the side
                   and size as attribute, and copy the logic from the example
-                  at bitstamp.net/websocket"""
+                  at bitstamp.net/websocket'''
 
     def live_orders(self, message, base=None, quote=None, messagetype=None,
                     *args, **kwargs):
-        """order_created, order_changed, order_deleted:
-           id, amount, price, order_type, datetime"""
+        '''order_created, order_changed, order_deleted:
+           id, amount, price, order_type, datetime'''
         message['price'] = str(message['price'])
         if messagetype == 'order_created':
             if message['price'] not in self.openorders[base][quote]['price']:
