@@ -4,7 +4,7 @@ Client for the Bitstamp websocket written in Python.
 API Documentation: https://www.bitstamp.net/websocket/
 
 What you can do with this client:
-- Live ticker (untested)
+- Live ticker **(tested)**
 - Live Order Book **(tested)**
 - Live Full Order Book (untested)
 - Liver Orders (untested)
@@ -17,7 +17,7 @@ What you can do with this client:
 git clone git@github.com:philipperemy/bitstamp-realtime-order-book.git
 cd bitstamp-realtime-order-book
 pip3 install -r requirements.txt
-python3 ges.py # will start streaming the order book of BTC/USD.
+python3 live_order_book.py # will start streaming the order book of BTC/USD.
 ```
 
 Firstly, instantiate a new Bitstamp object.
